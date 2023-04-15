@@ -445,7 +445,11 @@ class adaptive_float(_ieee754):
         self.exp_bias = exp_bias
 
     def real_to_format_tensor(self, tensor):
-        return self.quantize_adaptivfloat(float_arr=tensor,
+        #return self.quantize_adaptivfloat(float_arr=tensor,
+                                          #n_bits=self.bit_width,
+                                          #n_exp=self.exp_len,
+                                          #bias=self.exp_bias)
+        return self.quantize_adaptivfloat_py(float_arr=tensor,
                                           n_bits=self.bit_width,
                                           n_exp=self.exp_len,
                                           bias=self.exp_bias)
@@ -464,10 +468,12 @@ class adaptive_float(_ieee754):
 
         bias_temp = torch.frexp(float_arr.max())[1] - 1
         bias = (2 ** (n_exp - 1) - 1) - bias_temp
+        print('adaptive bias: ', bias)
 
         # 2. limits the range of output float point
         min_exp = -2 ** (n_exp - 1) + 2 - bias
         max_exp = 2 ** (n_exp - 1) - 1 - bias
+        print('max exp adaptive: ', max_exp)
 
         min_value = 2. ** min_exp
         max_value = (2. ** max_exp) * (2 - 2 ** (-n_mant))
@@ -568,3 +574,88 @@ class adaptive_float(_ieee754):
 
         # Python
         # return self.quantize_adaptivfloat_meta_py(float_arr, n_bits, n_exp, bias)
+
+class block_adapt_fp(_ieee754):
+    """Combining blockfp and adaptivfloat into a new number system"""
+    def __init__(self, bit_width=32, exp_len=8, mant_len=23, exp_bias=None):
+        super(block_adapt_fp, self).__init__(exp_len=exp_len, mant_len=mant_len)
+        self.bit_width = bit_width
+        self.exp_bias = exp_bias
+
+    def real_to_format(self, num):
+        raise NotImplementedError
+
+    def real_to_format_tensor(self, tensor):
+        return self.quant_block_adapt(float_arr=tensor,
+                                          n_bits=self.bit_width,
+                                          n_exp=self.exp_len,
+                                          bias=self.exp_bias)
+    
+
+    def quant_block_adapt(self, float_arr, n_bits=8, n_exp=4, bias=None):
+        
+        # Find number of bits for the mantissa
+        n_mant = n_bits - 1 - n_exp # Subtracts the sign bit as well
+        # Store sign value and find the absolute value of the float array
+        sign = torch.sign(float_arr)
+        float_arr = torch.abs(float_arr)
+
+        # Use the exponent of the maximum value in the float array to
+        # determine the exponent bias value and tune the range appropriately
+        bias_temp = torch.frexp(float_arr.max())[1] - 1
+        bias = (2 ** (n_exp - 1) - 1) - bias_temp
+
+        # Find the maximum and minimum possible exponent
+        min_exp = -2 ** (n_exp - 1) + 2 - bias
+        max_exp = 2 ** (n_exp - 1) - 1 - bias
+        print('max exp: ', max_exp)
+
+        # Find upper and lower limits for the number format based on
+        # the mamximum and minimum exponents
+        min_value = 2. ** min_exp
+        max_value = (2. ** max_exp) * (2 - 2 ** (-n_mant))
+
+        # Make sure the resulting values are within bounds
+        # Starting with non-denormal numbers
+        float_arr[float_arr < min_value] = 0
+
+        # Reduce too large values to max value of output format
+        float_arr[float_arr > max_value] = max_value
+
+        # Get mant, exp (the format is different from IEEE float)
+        mant, exp = torch.frexp(float_arr)
+
+        # Change mant and exp format to IEEE float format
+        # no effect for exponent of 0 outputs
+        mant = 2 * mant
+        exp = exp - 1
+
+        # Select the maximum exponent of the array as the shared exponent
+        shared_exp = exp.max()
+        print('shared exp: ', shared_exp)
+        exp_diff = shared_exp - exp
+        power_exp_diff = torch.exp2(exp_diff)
+        mant_adj = mant / power_exp_diff
+
+        exp_adj = torch.full(exp.shape, shared_exp, device=float_arr.device)
+
+        # exp should not be larger than max_exp
+        assert (shared_exp <= max_exp)
+        power_exp = torch.exp2(exp_adj)
+
+        # Quantize mantissa
+        scale = 2 ** (-n_mant)  # e.g. 2 bit, scale = 0.25
+        mant_adj = ((mant_adj / scale).round()) * scale
+
+        block_adapt_out = sign * power_exp * mant_adj
+        return block_adapt_out
+
+
+    def real_to_format_tensor_meta(self, tensor):
+        raise NotImplementedError
+
+    def format_to_real(self, bit_arr):
+        raise NotImplementedError
+
+    def format_to_real_tensor(self, tensor):
+        return tensor.to(torch.float32)

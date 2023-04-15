@@ -769,3 +769,37 @@ def test_block():
                               [ 3.984375,  3.984375, -3.984375,  3.984375]])
 
     assert(torch.equal(block10.real_to_format_tensor(test2), expected2))
+
+# Adaptive BFP
+def test_block_adaptive():
+    # test tensors to use on different systems
+    test1 = torch.tensor([[-1.17,  2.71, -1.60,  0.43],
+                          [-1.14,  2.05,  1.01,  0.07],
+                          [ 0.16, -0.03, -0.89, -0.87],
+                          [-0.04, -0.39,  0.64, -2.89]])
+
+    test2 = torch.tensor([[ 997.481,  188.034, -147.376, -277.766],
+                          [-617.844, -755.696,   18.283,  670.539],
+                          [-709.682, -841.260,  300.587,  837.047],
+                          [ 347.082,   98.871, -775.379,  709.284]])
+    
+    adaptivebfp4 = block_adapt_fp(
+        bit_width=4,
+        exp_len=2,
+        mant_len=1,
+        exp_bias=None
+    )
+
+    expected1 = torch.tensor([[-1.,  3., -2.,  0.],
+                              [-1.,  2.,  1.,  0.],
+                              [ 0., -0., -0., -0.],
+                              [-0., -0.,  0., -3.]])
+    
+    assert(torch.equal(adaptivebfp4.real_to_format_tensor(test1), expected1))
+
+    expected2 = torch.tensor([[ 768.,    0.,   -0., -256.],
+                              [-512., -768.,    0.,  768.],
+                              [-768., -768.,  256.,  768.],
+                              [ 256.,    0., -768.,  768.]])
+
+    assert(torch.equal(adaptivebfp4.real_to_format_tensor(test2), expected2))
