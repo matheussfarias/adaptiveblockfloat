@@ -91,17 +91,17 @@ else
     echo "Skipped."
 fi
 
-# injections
-echo "Error Injection Campaign ... "
-#read -p "    About to launch an error injection campaign. Are you sure? " -n 1 -r
-#echo
-#if [[ $REPLY =~ ^[Yy]$ ]]
-#then
-python3 ${SCRIPT4} -b ${BATCH} -n ${NETWORK} -d ${DATASET} -o ${OUTPUT_PATH} ${TRAINSET} ${VERBOSE} ${DEBUG} -w ${WORKERS} -P ${PRECISION} -i ${INJECTIONS} -I ${INJECTIONS_LOC} -f ${FORMAT}  -B ${BITWIDTH} -R ${RADIX} ${BIAS} ${QUANT}
-#python3 ${SCRIPT4} -b 1 -n ${NETWORK} -d ${DATASET} -o ${OUTPUT_PATH} ${TRAINSET} ${VERBOSE} ${DEBUG} -w ${WORKERS} -P ${PRECISION} -i ${INJECTIONS} -I ${INJECTIONS_LOC} -f ${FORMAT}  -B ${BITWIDTH} -R ${RADIX} ${BIAS} ${QUANT}
-#fi
+# # injections
+# echo "Error Injection Campaign ... "
+# #read -p "    About to launch an error injection campaign. Are you sure? " -n 1 -r
+# #echo
+# #if [[ $REPLY =~ ^[Yy]$ ]]
+# #then
+# python3 ${SCRIPT4} -b ${BATCH} -n ${NETWORK} -d ${DATASET} -o ${OUTPUT_PATH} ${TRAINSET} ${VERBOSE} ${DEBUG} -w ${WORKERS} -P ${PRECISION} -i ${INJECTIONS} -I ${INJECTIONS_LOC} -f ${FORMAT}  -B ${BITWIDTH} -R ${RADIX} ${BIAS} ${QUANT}
+# #python3 ${SCRIPT4} -b 1 -n ${NETWORK} -d ${DATASET} -o ${OUTPUT_PATH} ${TRAINSET} ${VERBOSE} ${DEBUG} -w ${WORKERS} -P ${PRECISION} -i ${INJECTIONS} -I ${INJECTIONS_LOC} -f ${FORMAT}  -B ${BITWIDTH} -R ${RADIX} ${BIAS} ${QUANT}
+# #fi
 
-# postprocessing
-echo -n "Postprocessing ... "
-python3 ${SCRIPT5} -b ${BATCH} -n ${NETWORK} -d ${DATASET} -o ${OUTPUT_PATH} ${TRAINSET} ${VERBOSE} ${DEBUG} -w ${WORKERS} -P ${PRECISION} -i ${INJECTIONS} -f ${FORMAT} -B ${BITWIDTH} -R ${RADIX} ${BIAS} ${QUANT}
-echo -n "Done! "
+# # postprocessing
+# echo -n "Postprocessing ... "
+# python3 ${SCRIPT5} -b ${BATCH} -n ${NETWORK} -d ${DATASET} -o ${OUTPUT_PATH} ${TRAINSET} ${VERBOSE} ${DEBUG} -w ${WORKERS} -P ${PRECISION} -i ${INJECTIONS} -f ${FORMAT} -B ${BITWIDTH} -R ${RADIX} ${BIAS} ${QUANT}
+# echo -n "Done! "

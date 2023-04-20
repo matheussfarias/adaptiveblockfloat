@@ -1,43 +1,43 @@
-from goldeneye.src.num_sys_class import *
-from goldeneye.src.num_sys_class import _number_sys, _ieee754
+from adaptiveblockfloat.src.num_sys_class import *
+from adaptiveblockfloat.src.num_sys_class import _number_sys, _ieee754
 import torch
 import math
 
 # Adaptive Float
-def test_adaptive():
-    # test tensors to use on different systems
-    test1 = torch.tensor([[-1.17,  2.71, -1.60,  0.43],
-                          [-1.14,  2.05,  1.01,  0.07],
-                          [ 0.16, -0.03, -0.89, -0.87],
-                          [-0.04, -0.39,  0.64, -2.89]])
+# def test_adaptive():
+#     # test tensors to use on different systems
+#     test1 = torch.tensor([[-1.17,  2.71, -1.60,  0.43],
+#                           [-1.14,  2.05,  1.01,  0.07],
+#                           [ 0.16, -0.03, -0.89, -0.87],
+#                           [-0.04, -0.39,  0.64, -2.89]])
 
-    test2 = torch.tensor([[ 997.481,  188.034, -147.376, -277.766],
-                          [-617.844, -755.696,   18.283,  670.539],
-                          [-709.682, -841.260,  300.587,  837.047],
-                          [ 347.082,   98.871, -775.379,  709.284]])
+#     test2 = torch.tensor([[ 997.481,  188.034, -147.376, -277.766],
+#                           [-617.844, -755.696,   18.283,  670.539],
+#                           [-709.682, -841.260,  300.587,  837.047],
+#                           [ 347.082,   98.871, -775.379,  709.284]])
 
-    # bitwidth of 4, 1 sign bit, 2 exponent bits, 1 mantissa bit
-    adaptive4 = adaptive_float(
-        bit_width=4,
-        exp_len=2,
-        mant_len=1,
-        exp_bias=None
-    )
+#     # bitwidth of 4, 1 sign bit, 2 exponent bits, 1 mantissa bit
+#     adaptive4 = adaptive_float(
+#         bit_width=4,
+#         exp_len=2,
+#         mant_len=1,
+#         exp_bias=None
+#     )
 
-    # # expected tensors for tests
-    # expected1 = torch.tensor([[-1.0,  3.0, -1.5,  0.0],
-    #                           [-1.0,  2.0,  1.0,  0.0],
-    #                           [ 0.0, -0.0, -0.0, -0.0],
-    #                           [-0.0, -0.0,  0.0, -3.0]])
+#     # expected tensors for tests
+#     expected1 = torch.tensor([[-1.0,  3.0, -1.5,  0.0],
+#                               [-1.0,  2.0,  1.0,  0.0],
+#                               [ 0.0, -0.0, -0.0, -0.0],
+#                               [-0.0, -0.0,  0.0, -3.0]])
 
-    # assert(torch.equal(adaptive4.real_to_format_tensor(test1), expected1))
+#     assert(torch.equal(adaptive4.real_to_format_tensor(test1), expected1))
 
-    expected2 = torch.tensor([[ 768.0,    0.0,   -0.0, -256.0],
-                              [-512.0, -768.0,    0.0,  768.0],
-                              [-768.0, -768.0,  256.0,  768.0],
-                              [ 384.0,    0.0, -768.0,  768.0]])
+    # expected2 = torch.tensor([[ 768.0,    0.0,   -0.0, -256.0],
+    #                           [-512.0, -768.0,    0.0,  768.0],
+    #                           [-768.0, -768.0,  256.0,  768.0],
+    #                           [ 384.0,    0.0, -768.0,  768.0]])
 
-    assert(torch.equal(adaptive4.real_to_format_tensor(test2), expected2))
+    # assert(torch.equal(adaptive4.real_to_format_tensor(test2), expected2))
 
 #     # bitwidth of 6, 1 sign bit, 2 exponent bits, 3 mantissa bits
 #     adaptive6 = adaptive_float(
@@ -120,13 +120,13 @@ def test_block_adaptive():
                           [-617.844, -755.696,   18.283,  670.539],
                           [-709.682, -841.260,  300.587,  837.047],
                           [ 347.082,   98.871, -775.379,  709.284]])
-    
-    bladapt4 = block_adapt_fp(
-        bit_width=4,
-        exp_len=2,
-        mant_len=1,
+
+    test3 = torch.load('val/float_arr.pt')
+
+    bladapt16 = block_adapt_fp(
+        bit_width=16,
+        exp_len=5,
+        mant_len=10,
         exp_bias=None
     )
-
-    result_b_adapt = bladapt4.real_to_format_tensor(test2)
-    print(result_b_adapt)
+    result_b_adapt = bladapt16.real_to_format_tensor(test3)

@@ -1,6 +1,8 @@
 import os
 import random
 import torch
+import pandas as pd
+import numpy as np
 from torch.utils.cpp_extension import load
 from qtorch.quant import float_quantize, fixed_point_quantize, block_quantize
 
@@ -309,7 +311,10 @@ class block_fp(_ieee754):
         self.bit_width = bit_width
 
     def real_to_format_tensor(self, tensor):
-        return self.quant_bfloat(float_arr=tensor,
+        # return self.quant_bfloat(float_arr=tensor,
+        #                          n_bits=self.bit_width,
+        #                          n_exp=self.exp_len)
+        return self.quant_bfloat_py(float_arr=tensor,
                                  n_bits=self.bit_width,
                                  n_exp=self.exp_len)
 
@@ -468,12 +473,10 @@ class adaptive_float(_ieee754):
 
         bias_temp = torch.frexp(float_arr.max())[1] - 1
         bias = (2 ** (n_exp - 1) - 1) - bias_temp
-        print('adaptive bias: ', bias)
 
         # 2. limits the range of output float point
         min_exp = -2 ** (n_exp - 1) + 2 - bias
         max_exp = 2 ** (n_exp - 1) - 1 - bias
-        print('max exp adaptive: ', max_exp)
 
         min_value = 2. ** min_exp
         max_value = (2. ** max_exp) * (2 - 2 ** (-n_mant))
@@ -593,7 +596,6 @@ class block_adapt_fp(_ieee754):
     
 
     def quant_block_adapt(self, float_arr, n_bits=8, n_exp=4, bias=None):
-        
         # Find number of bits for the mantissa
         n_mant = n_bits - 1 - n_exp # Subtracts the sign bit as well
         # Store sign value and find the absolute value of the float array
@@ -608,12 +610,14 @@ class block_adapt_fp(_ieee754):
         # Find the maximum and minimum possible exponent
         min_exp = -2 ** (n_exp - 1) + 2 - bias
         max_exp = 2 ** (n_exp - 1) - 1 - bias
-        print('max exp: ', max_exp)
+        print(max_exp)
+        print(min_exp)
 
         # Find upper and lower limits for the number format based on
         # the mamximum and minimum exponents
         min_value = 2. ** min_exp
         max_value = (2. ** max_exp) * (2 - 2 ** (-n_mant))
+        print(max_value)
 
         # Make sure the resulting values are within bounds
         # Starting with non-denormal numbers
@@ -629,16 +633,18 @@ class block_adapt_fp(_ieee754):
         # no effect for exponent of 0 outputs
         mant = 2 * mant
         exp = exp - 1
+        print(exp.max())
 
         # Select the maximum exponent of the array as the shared exponent
         shared_exp = exp.max()
-        print('shared exp: ', shared_exp)
         exp_diff = shared_exp - exp
         power_exp_diff = torch.exp2(exp_diff)
         mant_adj = mant / power_exp_diff
 
         exp_adj = torch.full(exp.shape, shared_exp, device=float_arr.device)
 
+        if(shared_exp > max_exp):
+            torch.save(float_arr, 'float_arr.pt')
         # exp should not be larger than max_exp
         assert (shared_exp <= max_exp)
         power_exp = torch.exp2(exp_adj)
