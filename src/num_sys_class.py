@@ -610,14 +610,12 @@ class block_adapt_fp(_ieee754):
         # Find the maximum and minimum possible exponent
         min_exp = -2 ** (n_exp - 1) + 2 - bias
         max_exp = 2 ** (n_exp - 1) - 1 - bias
-        print(max_exp)
-        print(min_exp)
 
         # Find upper and lower limits for the number format based on
         # the mamximum and minimum exponents
         min_value = 2. ** min_exp
         max_value = (2. ** max_exp) * (2 - 2 ** (-n_mant))
-        print(max_value)
+        #print(max_value)
 
         # Make sure the resulting values are within bounds
         # Starting with non-denormal numbers
@@ -628,13 +626,21 @@ class block_adapt_fp(_ieee754):
 
         # Get mant, exp (the format is different from IEEE float)
         mant, exp = torch.frexp(float_arr)
+        #print(exp.argmax())
+        #print(torch.flatten(float_arr)[exp.argmax()])
+        #mant1, exp1 = torch.frexp(torch.flatten(float_arr)[exp.argmax()])
 
         # Change mant and exp format to IEEE float format
         # no effect for exponent of 0 outputs
         mant = 2 * mant
+        #print(mant.shape)
+        mant_idx = (mant == 0)
+        mant_non_idx = (mant != 0)
+        #print(mant_idx.shape)
         exp = exp - 1
-        print(exp.max())
-
+        max_exp_nonzero = exp[mant_non_idx].max()
+        exp[mant_idx] = max_exp_nonzero
+        
         # Select the maximum exponent of the array as the shared exponent
         shared_exp = exp.max()
         exp_diff = shared_exp - exp
@@ -643,8 +649,8 @@ class block_adapt_fp(_ieee754):
 
         exp_adj = torch.full(exp.shape, shared_exp, device=float_arr.device)
 
-        if(shared_exp > max_exp):
-            torch.save(float_arr, 'float_arr.pt')
+        #if(shared_exp > max_exp):
+            #torch.save(float_arr, 'float_arr.pt')
         # exp should not be larger than max_exp
         assert (shared_exp <= max_exp)
         power_exp = torch.exp2(exp_adj)

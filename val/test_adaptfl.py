@@ -123,6 +123,11 @@ def test_block_adaptive():
 
     test3 = torch.load('val/float_arr.pt')
 
+    mant = torch.tensor([0])
+    power_exp = torch.exp2(torch.tensor([-1]))
+    sign = torch.tensor([0])
+    adapt_test = sign*power_exp*mant
+
     bladapt16 = block_adapt_fp(
         bit_width=16,
         exp_len=5,
