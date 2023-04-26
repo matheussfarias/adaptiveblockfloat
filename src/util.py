@@ -16,7 +16,8 @@ from othermodels import resnet, vgg, cifar10_nn
 Environment Variables
 '''
 #DATASETS = os.environ['ML_DATASETS']
-DATASETS = "/n/acc_lab/Lab/imagenet/"
+#DATASETS = "/n/acc_lab/Lab/"
+DATASETS = "/n/holyscratch01/shared"
 
 '''
 Helper functions to parse input
