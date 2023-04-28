@@ -1,0 +1,17 @@
+num, numformat, bitwidth, exp_bits, mantissa_bits, quant_en, qbits, accuracy, top1conf, top2diff, ave_loss
+1, adaptive_block_fp, 16, 7, 8, False, -1, 76.078000, 66.683821, 61.848663, 0.962231
+2, adaptive_block_fp, 16, 3, 12, False, -1, 60.018000, 47.992646, 43.184875, 1.742271
+3, adaptive_block_fp, 16, 5, 10, False, -1, 76.184000, 66.750708, 61.894005, 0.961516
+4, adaptive_block_fp, 16, 4, 11, False, -1, 76.154000, 66.739622, 61.892471, 0.961607
+5, adaptive_block_fp, 8, 3, 4, False, -1, 57.352000, 45.604816, 40.839247, 1.873389
+6, adaptive_block_fp, 8, 5, 2, False, -1, 0.126000, 0.038654, 0.023017, 12.835626
+7, adaptive_block_fp, 8, 6, 1, False, -1, 0.204000, 0.005898, 0.002000, 7.373763
+8, adaptive_block_fp, 12, 5, 6, False, -1, 75.656000, 66.145221, 61.290884, 0.978291
+9, adaptive_block_fp, 12, 2, 9, False, -1, 0.100000, 0.000495, 0.000057, 6.973105
+10, adaptive_block_fp, 12, 3, 8, False, -1, 59.856000, 47.834376, 43.009207, 1.748258
+11, adaptive_block_fp, 10, 4, 5, False, -1, 73.162000, 63.278086, 58.397218, 1.076204
+12, adaptive_block_fp, 10, 6, 3, False, -1, 1.744000, 0.835444, 0.669888, 8.850570
+13, adaptive_block_fp, 10, 7, 2, False, -1, 0.126000, 0.038654, 0.023017, 12.835626
+14, adaptive_block_fp, 11, 5, 5, False, -1, 73.162000, 63.278086, 58.397218, 1.076204
+15, adaptive_block_fp, 11, 7, 3, False, -1, 1.744000, 0.835444, 0.669888, 8.850570
+16, adaptive_block_fp, 11, 8, 2, False, -1, 0.126000, 0.038654, 0.023017, 12.835626
