@@ -1,0 +1,7 @@
+===========================================
+resnet18_CIFAR10_realFP32_simadaptive_block_fp_bw4_r1_biasNone
+Accuracy: 	10.09%
+Ave Loss: 	2.32
+Ave Conf: 	15.12%
+Ave Top2Diff: 	4.55%
+===========================================
