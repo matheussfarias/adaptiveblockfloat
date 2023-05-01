@@ -271,13 +271,13 @@ if __name__ == '__main__':
     #                      model, getDataset(), getBatchsize(), getWorkers(), ranges,
     #                      verbose=getVerbose())
     #
-    # # adaptiv_fp sweep
-    # count += sweepFormat(threshold_, num_formats[3], bit_widths, qbit_widths, radix_allowed,
-    #                      model, getDataset(), getBatchsize(), getWorkers(), ranges,
-    #                      verbose=getVerbose())
+    # adaptiv_fp sweep
+    count += sweepFormat(threshold_, num_formats[3], bit_widths, qbit_widths, radix_allowed,
+                        model, getDataset(), getBatchsize(), getWorkers(), ranges,
+                        verbose=getVerbose())
     # adaptive_block_fp sweep
-    count += sweepFormat(threshold_, num_formats[4], bit_widths, qbit_widths, radix_allowed,
-                         model, getDataset(), getBatchsize(), getWorkers(), ranges,
-                         verbose=getVerbose())
+    #count += sweepFormat(threshold_, num_formats[4], bit_widths, qbit_widths, radix_allowed,
+    #                     model, getDataset(), getBatchsize(), getWorkers(), ranges,
+    #                     verbose=getVerbose())
 
     print("Total Count:", count)
