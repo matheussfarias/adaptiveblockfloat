@@ -1,0 +1,7 @@
+===========================================
+vit_base_IMAGENET_realFP32_simadaptive_block_fp_bw10_r5_biasNone
+Accuracy: 	29.49%
+Ave Loss: 	3.85
+Ave Conf: 	26.55%
+Ave Top2Diff: 	19.56%
+===========================================

@@ -1,0 +1,7 @@
+===========================================
+vgg19_bn_IMAGENET_realFP32_simadaptive_block_fp_bw8_r4_biasNone
+Accuracy: 	60.23%
+Ave Loss: 	1.67
+Ave Conf: 	67.53%
+Ave Top2Diff: 	55.80%
+===========================================

@@ -1,0 +1,7 @@
+===========================================
+mobilenet_IMAGENET_realFP32_simadaptive_fp_bw10_r5_biasNone
+Accuracy: 	71.72%
+Ave Loss: 	1.15
+Ave Conf: 	74.42%
+Ave Top2Diff: 	64.19%
+===========================================

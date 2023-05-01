@@ -1,0 +1,7 @@
+===========================================
+mobilenet_IMAGENET_realFP32_simadaptive_block_fp_bw12_r6_biasNone
+Accuracy: 	61.46%
+Ave Loss: 	1.65
+Ave Conf: 	64.50%
+Ave Top2Diff: 	52.93%
+===========================================

@@ -1,0 +1,7 @@
+===========================================
+deit_base_IMAGENET_realFP32_simadaptive_fp_bw10_r5_biasNone
+Accuracy: 	81.74%
+Ave Loss: 	0.83
+Ave Conf: 	75.15%
+Ave Top2Diff: 	69.02%
+===========================================

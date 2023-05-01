@@ -1,0 +1,7 @@
+===========================================
+vit_base_IMAGENET_realFP32_simblock_fp_bw12_r6_biasNone
+Accuracy: 	72.77%
+Ave Loss: 	1.09
+Ave Conf: 	71.33%
+Ave Top2Diff: 	61.68%
+===========================================

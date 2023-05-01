@@ -1,0 +1,7 @@
+===========================================
+vit_base_IMAGENET_realFP32_simadaptive_fp_bw8_r4_biasNone
+Accuracy: 	0.87%
+Ave Loss: 	7.47
+Ave Conf: 	16.67%
+Ave Top2Diff: 	11.62%
+===========================================
