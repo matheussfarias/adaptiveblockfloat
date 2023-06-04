@@ -282,7 +282,7 @@ class goldeneye(core.fault_injection):
                     self.corrupt_dim3[i],
                 )
 
-                if self.num_sys_name == "block_fp" and self.inj_order == 1:
+                if self.num_sys_name == "block_fp" or "adaptive_block_fp" and self.inj_order == 1:
                     # only select mantissa or sign bit
                     rand_bit = random.randint(0, self.num_sys.mant_len)
                     if rand_bit == self.num_sys.mant_len:
@@ -313,9 +313,20 @@ class goldeneye(core.fault_injection):
         # tensor conversions (FP32 -> Num Sys)
         # number system emulation (with meta injection support)
         if self.quant is False:
-            output[:] = self.num_sys.convert_numsys_tensor(output, meta_inj=meta_inj_en)
+            print('Tensor size before conversion:')
+            print(output.size())
+            output = torch.split(output,1)
+            output = list(output)
+            for i in range(len(output)):
+                output[i] = self.num_sys.convert_numsys_tensor(output[i], meta_inj=meta_inj_en)
+            # output[:] = self.num_sys.convert_numsys_tensor(output, meta_inj=meta_inj_en)
             # output = self.num_sys.convert_numsys_tensor(output, meta_inj=meta_inj_en)
+            output = tuple(output)
+            output = torch.cat(output)
+            print('Tensor size after conversion:')
+            print(output.size())
             torch.cuda.empty_cache()
+            exit()
         else:
             # quantize (scale and quant NumSys)
             if self.qsigned:

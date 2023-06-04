@@ -120,18 +120,28 @@ def test_block_adaptive():
                           [-617.844, -755.696,   18.283,  670.539],
                           [-709.682, -841.260,  300.587,  837.047],
                           [ 347.082,   98.871, -775.379,  709.284]])
+    
 
-    test3 = torch.load('val/float_arr.pt')
+    test3 = torch.load('float_arr.pt')
+    print('Initial tensor size:', test3.size())
+    print('Tensor shape first element:', test3.shape[0])
+    test3 = torch.split(test3, 1)
+    print('Tuple size:',len(test3))
+    print('Tuple element size:', test3[0].size())
+    test3 = torch.cat(test3)
+    print('Tensor size after concat:', test3.size())
+    
 
-    mant = torch.tensor([0])
-    power_exp = torch.exp2(torch.tensor([-1]))
-    sign = torch.tensor([0])
-    adapt_test = sign*power_exp*mant
 
-    bladapt16 = block_adapt_fp(
-        bit_width=16,
-        exp_len=5,
-        mant_len=10,
-        exp_bias=None
-    )
-    result_b_adapt = bladapt16.real_to_format_tensor(test3)
+    # mant = torch.tensor([0])
+    # power_exp = torch.exp2(torch.tensor([-1]))
+    # sign = torch.tensor([0])
+    # adapt_test = sign*power_exp*mant
+
+    # bladapt16 = block_adapt_fp(
+    #     bit_width=16,
+    #     exp_len=5,
+    #     mant_len=10,
+    #     exp_bias=None
+    # )
+    # result_b_adapt = bladapt16.real_to_format_tensor(test3)
