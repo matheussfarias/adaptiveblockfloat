@@ -313,8 +313,6 @@ class goldeneye(core.fault_injection):
         # tensor conversions (FP32 -> Num Sys)
         # number system emulation (with meta injection support)
         if self.quant is False:
-            print('Tensor size before conversion:')
-            print(output.size())
             output = torch.split(output,1)
             output = list(output)
             for i in range(len(output)):
@@ -323,8 +321,6 @@ class goldeneye(core.fault_injection):
             # output = self.num_sys.convert_numsys_tensor(output, meta_inj=meta_inj_en)
             output = tuple(output)
             output = torch.cat(output)
-            print('Tensor size after conversion:')
-            print(output.size())
             torch.cuda.empty_cache()
         else:
             # quantize (scale and quant NumSys)
