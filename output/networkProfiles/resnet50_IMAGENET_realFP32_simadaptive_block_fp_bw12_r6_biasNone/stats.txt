@@ -1,7 +1,0 @@
-===========================================
-resnet50_IMAGENET_realFP32_simadaptive_block_fp_bw12_r6_biasNone
-Accuracy: 	75.63%
-Ave Loss: 	0.98
-Ave Conf: 	79.21%
-Ave Top2Diff: 	70.04%
-===========================================

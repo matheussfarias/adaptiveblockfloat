@@ -1,7 +1,0 @@
-===========================================
-resnet50_IMAGENET_realFP32_simfp_n_bw6_r3_biasNone
-Accuracy: 	1.94%
-Ave Loss: 	7.41
-Ave Conf: 	7.71%
-Ave Top2Diff: 	2.83%
-===========================================

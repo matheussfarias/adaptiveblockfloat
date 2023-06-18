@@ -1,7 +1,0 @@
-===========================================
-vgg19_bn_IMAGENET_realFP32_simblock_fp_bw8_r4_biasNone
-Accuracy: 	57.03%
-Ave Loss: 	1.55
-Ave Conf: 	49.79%
-Ave Top2Diff: 	33.62%
-===========================================

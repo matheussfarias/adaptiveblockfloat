@@ -1,7 +1,0 @@
-===========================================
-resnet18_CIFAR10_realFP32_simblock_fp_bw6_r3_biasNone
-Accuracy: 	10.00%
-Ave Loss: 	2.30
-Ave Conf: 	10.00%
-Ave Top2Diff: 	0.00%
-===========================================

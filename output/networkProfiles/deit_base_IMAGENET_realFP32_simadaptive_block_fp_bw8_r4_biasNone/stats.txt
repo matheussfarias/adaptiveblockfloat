@@ -1,7 +1,0 @@
-===========================================
-deit_base_IMAGENET_realFP32_simadaptive_block_fp_bw8_r4_biasNone
-Accuracy: 	68.59%
-Ave Loss: 	1.47
-Ave Conf: 	57.76%
-Ave Top2Diff: 	49.84%
-===========================================
