@@ -326,7 +326,6 @@ class goldeneye(core.fault_injection):
             print('Tensor size after conversion:')
             print(output.size())
             torch.cuda.empty_cache()
-            exit()
         else:
             # quantize (scale and quant NumSys)
             if self.qsigned:
